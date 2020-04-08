@@ -1,17 +1,21 @@
 #include "Bank.h"
 
-Bank :: Bank(int n, int a)
+using namespace std;
+
+Bank::Bank(int c, int acc)
 {
-	this->clients = new Client * [n];
-	this->max_clients_count = n;
+	this->clients = new Client * [c];
+	this->max_clients_count = c;
 	this->clients_count = 0;
 
-	this->accounts = new Account * [a];
-	this->max_accounts_count = n;
+	this->accounts = new Account* [acc];
+	this->max_accounts_count = acc;
 	this->account_count = 0;
+
+	
 }
 
-Bank :: ~Bank()
+Bank::~Bank()
 {
 	delete[]clients;
 	delete[]accounts;
@@ -21,10 +25,9 @@ Bank :: ~Bank()
 	this->account_count = 0;
 	this->max_clients_count = 0;
 	this->max_accounts_count = 0;
-	
 }
 
-Client* Bank :: get_client(int c)
+Client* Bank::get_client(int c)
 {
 	for (int i = 0; i < this->clients_count; i++)
 	{
@@ -35,7 +38,7 @@ Client* Bank :: get_client(int c)
 	return nullptr;
 }
 
-Account* Bank :: get_account(int n)
+Account* Bank::get_account(int n)
 {
 	for (int i = 0; i < this->account_count; i++)
 	{
@@ -46,7 +49,7 @@ Account* Bank :: get_account(int n)
 	return nullptr;
 }
 
-Client* Bank :: create_client(int c, string n)
+Client* Bank ::create_client(int c, string n)
 {
 	Client* n_client = new Client(c, n);
 	this->clients[this->clients_count] = n_client;
@@ -54,8 +57,7 @@ Client* Bank :: create_client(int c, string n)
 
 	return n_client;
 }
-
-Account* Bank :: create_account(int n, Client* c)
+Account* Bank::create_account(int n, Client* c)
 {
 	Account* n_account = new Account(n, c);
 	this->accounts[this->account_count] = n_account;
@@ -63,18 +65,17 @@ Account* Bank :: create_account(int n, Client* c)
 
 	return n_account;
 }
-
-Account* Bank :: create_account(int n, Client* c, double irate)
+Account* Bank::create_account(int n, Client* c, double irate)
 {
 	Account* n_account = new Account(n, c, irate);
 	this->accounts[this->account_count] = n_account;
-	this->account_count ++;
+	this->account_count++;
 
 	return n_account;
 }
-Account* Bank :: create_account(int n, Client* c, Client* p)
+Account* Bank::create_account(int n, Client* c, Client* p)
 {
-	if (this->account_count != 0) 
+	if (this->account_count != 0)
 	{
 		Account* account = new Account(n, c, p);
 		this->accounts[this->account_count] = account;
@@ -84,12 +85,11 @@ Account* Bank :: create_account(int n, Client* c, Client* p)
 	}
 	return nullptr;
 }
-
-Account* Bank :: create_account(int n, Client* c, Client* p, double ir)
+Account* Bank::create_account(int n, Client* c, Client* p, double irate)
 {
-	if (this->account_count != 0) 
+	if (this->account_count != 0)
 	{
-		Account* account = new Account(n, c, p, ir);
+		Account* account = new Account(n, c, p, irate);
 		this->accounts[this->account_count] = account;
 		this->account_count++;
 
@@ -98,15 +98,13 @@ Account* Bank :: create_account(int n, Client* c, Client* p, double ir)
 	return nullptr;
 }
 
-void Bank :: add_interest()
+void Bank::add_interest()
 {
 	for (int i = 0; i < this->account_count; i++)
 	{
-		double balance = this->accounts[i]->get_balance();
-		double irate = this->accounts[i]->get_interest_rate();
+		double balance = this->accounts[i]->get_bal();
+		double irate = this->accounts[i]->get_irate();
 		double deposit = (balance / 100) * irate;
 		this->accounts[i]->deposit(deposit);
 	}
 }
-
-
